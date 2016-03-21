@@ -28,11 +28,7 @@ public class GhokemonWorld
 	}
 
 	public void start() {
-		boolean temp = false;
-		while(surroundingIsVisited(startIndex[0], startIndex[1]) == false) {
-			this.terrain[startIndex[0]][startIndex[1]] = "L";
-			temp = exploring(startIndex[0], startIndex[1], temp);
-		}
+			exploring(startIndex[0], startIndex[1], false);
 	}
 
 	private boolean exploring(int startRow, int startColumn, boolean inverse) 
@@ -53,21 +49,21 @@ public class GhokemonWorld
 		}
 		this.terrain[startRow][startColumn] = "@";
 
-		inverse = exploring(startRow - 1, startColumn, inverse);
-		if(inverse) {
-			inverse = exploring(startRow, startColumn - 1, inverse);
-		}
-		else {
-			inverse = exploring(startRow, startColumn + 1, inverse);
-		}
-
-		inverse = exploring(startRow + 1, startColumn, inverse);
-
-		if(inverse) {
-		 	inverse = exploring(startRow, startColumn + 1, inverse);
-		}
-		else {
-		 	inverse = exploring(startRow, startColumn - 1, inverse);
+		while(surroundingIsVisited(startRow, startColumn) == false) {
+			inverse = exploring(startRow - 1, startColumn, inverse);
+			if(inverse) {
+				inverse = exploring(startRow, startColumn - 1, inverse);
+			}
+			else {
+				inverse = exploring(startRow, startColumn + 1, inverse);
+			}
+			inverse = exploring(startRow + 1, startColumn, inverse);
+			if(inverse) {
+			 	inverse = exploring(startRow, startColumn + 1, inverse);
+			}
+			else {
+			 	inverse = exploring(startRow, startColumn - 1, inverse);
+			}
 		}
 
 		return inverse;
@@ -110,6 +106,4 @@ public class GhokemonWorld
 			return false;
 		}
 	}
-
-
 }
